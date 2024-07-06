@@ -1,45 +1,70 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import { useState, useCallback } from "react";
+import StopwatchImage from "./StopwatchImage.jsx";
 
 export function Stopwatch () {
-    const [ timeCount, setTimeCount ] = useState(30);
-    const [ timeEnded, setTimeEnded ] = useState(false);
-    const [ countInterval, setCountInterval] = useState()
+    const [ secCount, setSecCount ] = useState(55);
+    const [ minuteCount, setMinuteCount ] = useState(1);
+    const [ countInterval, setCountInterval] = useState();
+    const [ animate, setAnimate] = useState(false);
 
     const timer = {
-        clock: () => setInterval(decreaseCount, 1000)
+        clock: () => setInterval(increaseCount, 1000)
     }
 
-    const decreaseCount = () => {
-        setTimeCount(prev =>  {
-            const newTimeCount = prev-1;
-            watchEnd(newTimeCount);
-            return newTimeCount;
+    const increaseCount = useCallback(() => {
+        setSecCount(prev =>  {
+            let newSecCount = prev + 1;
+            if (newSecCount === 60) {
+                setMinuteCount(prev => prev+1);
+                return 0;
+            }
+            return newSecCount;
         });
-    };
-    
-    const watchEnd = (count) => {
-        if (count == 0){
-            setTimeEnded(true);
-            return 1;
-        }
-        return 0;
-    }; 
+    }, [setSecCount, setMinuteCount])
     
     // Função para iniciar o timer
     const startStopwatch = () => {
-        setCountInterval(timer.clock())
+        setCountInterval(timer.clock());
+        setAnimate(true);
     }
 
-    useEffect(()=> {
-        if(timeEnded){
-            clearInterval(countInterval)
-        }
-    }, [timeCount]);
+    // Função para parar o timer
+    const stopStopwatch = () => {
+        clearInterval(countInterval)
+        setAnimate(false);
+    }
 
     return (
         <div>
-            <button onClick={startStopwatch}>Start</button>
-            {"Quando chegar em 0 para: " + timeCount}
+            <button onClick={startStopwatch}>Start</button> <br />
+            <div className={`w-[110px] h-[110px] relative flex items-center justify-center ${animate && 'animate-wobble'}`}>
+                <StopwatchImage
+                    className={'w-[110px] h-[110px]'}
+                    colorClass={
+                        minuteCount < 2 && 'fill-green-700'
+                        ||
+                        minuteCount < 4 && 'fill-amber-300'
+                        ||
+                        'fill-red-500'
+                    }
+                />
+                <p className={`absolute text-2xl font-bold duration-500
+                    ${
+                        minuteCount < 2 && 'text-green-700'
+                        ||
+                        minuteCount < 4 && 'text-amber-300'
+                        ||
+                        'text-red-500'
+                    }
+                `}>
+                    {
+                        (minuteCount > 9 ? minuteCount : '0' + minuteCount)
+                        + ":" +
+                        (secCount > 9 ? secCount : '0' + secCount)
+                    }
+                </p>
+            </div>
+            <button onClick={stopStopwatch}>Stop</button> <br />
         </div>
     )
 }
