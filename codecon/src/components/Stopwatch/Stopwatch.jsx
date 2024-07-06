@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
+import { SiStagetimer } from "react-icons/si";
 
 export function Stopwatch () {
-    const [ timeCount, setTimeCount ] = useState(30);
+    const [ timeCount, setTimeCount ] = useState(0);
     const [ timeEnded, setTimeEnded ] = useState(false);
-    const [ countInterval, setCountInterval] = useState()
+    const [ countInterval, setCountInterval] = useState();
+    const [ animate, setAnimate] = useState(false);
 
     const timer = {
         clock: () => setInterval(decreaseCount, 1000)
@@ -11,15 +13,16 @@ export function Stopwatch () {
 
     const decreaseCount = () => {
         setTimeCount(prev =>  {
-            const newTimeCount = prev-1;
+            const newTimeCount = prev+1;
             watchEnd(newTimeCount);
             return newTimeCount;
         });
     };
     
     const watchEnd = (count) => {
-        if (count == 0){
+        if (count == 10){
             setTimeEnded(true);
+            setAnimate(false);
             return 1;
         }
         return 0;
@@ -27,7 +30,8 @@ export function Stopwatch () {
     
     // Função para iniciar o timer
     const startStopwatch = () => {
-        setCountInterval(timer.clock())
+        setCountInterval(timer.clock());
+        setAnimate(true);
     }
 
     useEffect(()=> {
@@ -38,8 +42,11 @@ export function Stopwatch () {
 
     return (
         <div>
-            <button onClick={startStopwatch}>Start</button>
-            {"Quando chegar em 0 para: " + timeCount}
+            <button onClick={startStopwatch}>Start</button> <br />
+            <div className="w-[100px] h-[100px] relative flex items-center justify-center">
+                <SiStagetimer className={`size-[100px] absolute ${animate ? 'animate-spin' : ''}`}/>
+                <p className={`absolute text-4xl font-bold ${animate ? 'animate-ping-slow' : ''}`}>{timeCount}</p>
+            </div>
         </div>
     )
 }
