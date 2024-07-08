@@ -56,12 +56,12 @@ export default function RankingComponent() {
     }, []);
 
     return (
-        <div className='w-11/12 h-1/2 bg-blue-400 rounded p-4 overflow-y-auto flex flex-col gap-4'>
-            <div className={'flex items-center gap-2'}>
+        <div className='w-11/12 h-1/2 bg-blue-400 rounded p-4 overflow-y-auto flex flex-col'>
+            <div className={'flex items-center gap-2 mb-4'}>
                 <FaTrophy size={50} color={'#fff'}/>
                 <h1 className={'text-2xl font-extrabold text-white'}>SoftExpert Quiz Ranking</h1>
             </div>
-            <div className={'flex flex-col gap-2 text-white'}>
+            <div className={'flex flex-col gap-2 text-white mb-2'}>
                 {
                     userRanking.ranking.map(user => {
                         return (
@@ -82,11 +82,13 @@ export default function RankingComponent() {
             </div>
             {
                 !userInPage &&
-                <div className={'flex flex-col justify-center'}>
-                    <div className={'text-4xl text-white flex justify-center font-bold'}>
-                        <HiOutlineDotsHorizontal />
+                <div className={'flex flex-col justify-center gap-2'}>
+                    <div className={'text-4xl h-15 text-white flex justify-between font-bold bg-blue-600 rounded'}>
+                        <HiOutlineDotsHorizontal size={28} className={'w-1/3 self-start'}/>
+                        <HiOutlineDotsHorizontal size={28} className={'w-1/4 text-center'}/>
+                        <HiOutlineDotsHorizontal size={28} className={'w-1/4 text-end'}/>
                     </div>
-                    <div className={'flex gap-4 justify-around text-xl text-amber-400 font-bold'}>
+                    <div className={'flex gap-4 justify-around text-xl text-amber-400 font-bold bg-blue-500 rounded'}>
                         <div className={'w-1/3 text-start'}>
                             {logedUserStats.position + '. '}{logedUserStats.nmUser}
                         </div>
