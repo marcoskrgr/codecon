@@ -13,14 +13,8 @@ RUN npm install
 # Copiar todos os arquivos do projeto para o diretório de trabalho
 COPY . .
 
-# Compilar o aplicativo React
-RUN npm run build
+# Expor a porta que o Vite usará
+EXPOSE 3000
 
-# Instalar um servidor estático para servir os arquivos compilados
-RUN npm install -g serve
-
-# Expor a porta que o servidor usará
-EXPOSE 5000
-
-# Comando para rodar o servidor estático
-CMD ["serve", "-s", "build"]
+# Comando para rodar o servidor de desenvolvimento do Vite
+CMD ["npm", "run", "dev"]
