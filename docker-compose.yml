@@ -1,9 +1,10 @@
-version: '3.8'
-
 services:
   frontend:
     build:
       context: ./frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
     ports:
       - "3000:3000"
     depends_on:
@@ -14,6 +15,9 @@ services:
       context: ./backend
     ports:
       - "4000:4000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
     environment:
       - DATABASE_URL=postgresql://postgres:password@db:5432/codecondb
     depends_on:

@@ -13,8 +13,11 @@ RUN npm install
 # Copiar todos os arquivos do projeto para o diretório de trabalho
 COPY . .
 
+# Instalar Nodemon globalmente
+RUN npm install -g nodemon
+
 # Expor a porta que a aplicação usará
 EXPOSE 4000
 
-# Comando para rodar o servidor
-CMD ["node", "server.js"]
+# Comando para iniciar a aplicação com Nodemon
+CMD ["npm", "run", "dev"]
