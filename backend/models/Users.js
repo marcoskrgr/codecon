@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+const { DataTypes } = require('sequelize')
+const sequelize = require('../config/database')
 
 const Users = sequelize.define('User', {
     id: {
@@ -16,17 +16,22 @@ const Users = sequelize.define('User', {
         allowNull: false,
         unique: true
     },
-    hasPlayed: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false
+    avatar: {
+        type: DataTypes.STRING,
+        allowNull: true,
     },
     phone: {
         type: DataTypes.STRING,
         allowNull: false
     },
+    hasPlayed: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
+    },
     role: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        defaultValue: 'player',
     }
 });
 
