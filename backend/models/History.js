@@ -1,6 +1,6 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
-const Users = require('./Users');
+const { DataTypes } = require('sequelize')
+const sequelize = require('../config/database')
+const Users = require('./Users')
 
 const History = sequelize.define('History', {
     time: {
