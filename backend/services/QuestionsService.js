@@ -1,5 +1,7 @@
-const { Questions } = require('../models');
+const { Questions, sequelize } = require('../models');
 const AnswersService = require('./AnswersService');
+const { Sequelize, Model, DataTypes } = require('sequelize');
+
 
 const QuestionsService = {
     createQuestion: async ({ title, level, answers }) => {
@@ -35,6 +37,50 @@ const QuestionsService = {
         const answersData = await AnswersService.createAnswersWhileCreatingQuestion({answers, questionId: question.id});
 
         dataReturn.answers.push(answersData);
+
+        return dataReturn;
+    },
+    getQuestion: async ({ rule }) => {
+        if(!rule){
+            const error = new Error('O campo de área de atuação não pode ser vazio.');
+            error.status = 400;
+            throw error;
+        }
+
+        const dataReturn = []
+
+        const questionsEasy = await Questions.findAll({
+            where:{
+                rule: {rule},
+                level: 5,
+            },
+            limit: 5,
+            order: sequelize.random()
+        });
+
+        dataReturn.push(questionsEasy);
+
+        const questionsMedium = await Questions.findAll({
+            where:{
+                rule: {rule},
+                level: 10,
+            },
+            limit: 5,
+            order: sequelize.random()
+        });
+
+        dataReturn.push(questionsMedium);
+
+        const questionsHard = await Questions.findAll({
+            where:{
+                rule: {rule},
+                level: 15,
+            },
+            limit: 5,
+            order: sequelize.random()
+        });
+
+        dataReturn.push(questionsHard);
 
         return dataReturn;
     }

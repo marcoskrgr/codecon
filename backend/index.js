@@ -5,6 +5,7 @@ const strat = require('./auth/passport-linkedin')
 const port = process.env.PORT || 4000
 const { QuestionsController, AnswersController } = require('./controllers')
 const app = express()
+app.use(express.json());
 
 // https://www.linkedin.com/oauth/v2/authorization?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A4000%2Fauth%2Flinkedin%2Fcallback&scope=r_emailaddress%20r_liteprofile&state=0QYdGsUeVaWDAK1ebdjfTMmu&client_id=77wh2farq79mh3
 
@@ -51,7 +52,13 @@ app.get("/", (req, res) => {
 app.post('/questions', QuestionsController.createQuestion);
 app.post('/verify-answer/:answerId', AnswersController.verifyAnswer);
 
-app.use('/auth', require('./routes/linkedin'))
+app.use('/auth', require('./routes/linkedin'));
+
+app.get('/questions', QuestionsController.getQuestion);
+
+// app.get('/getQuestions', (req, res) => {
+//     res.send("funciona");
+// })
 
 app.listen(port, () => {
     console.log("Listening at http://localhost:" + port)
