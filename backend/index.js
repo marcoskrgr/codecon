@@ -3,7 +3,7 @@ const passport = require('passport')
 const session = require('express-session')
 const strat = require('./auth/passport-linkedin')
 const port = process.env.PORT || 4000
-const { QuestionsController, AnswersController, ContactsController } = require('./controllers')
+const { QuestionsController, AnswersController, ContactsController, RankingController } = require('./controllers')
 const app = express()
 app.use(express.json());
 
@@ -58,7 +58,9 @@ app.get('/questions', QuestionsController.getQuestion);
 
 app.get('/contacts', ContactsController.getContacts);
 
-// app.get('/contacts', (req, res) => {
+app.get('/ranking', RankingController.getRanking);
+
+// app.get('/ranking', (req, res) => {
 //     res.send("funciona");
 // })
 
