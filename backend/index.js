@@ -7,9 +7,7 @@ const port = process.env.PORT || 4000
 const {
     QuestionsController,
     AnswersController ,
-    UsersController,
-    ContactsController,
-    RankingController
+    UsersController
 } = require('./controllers');
 const { CookieMiddleware } = require('./middlewares');
 const app = express()
@@ -62,8 +60,8 @@ app.post('/verify-answer/:answerId', CookieMiddleware, AnswersController.verifyA
 app.post('/register', UsersController.createUser);
 app.post('/login', UsersController.login);
 app.get('/questions', QuestionsController.getQuestion);
-app.get('/contacts', ContactsController.getContacts);
-app.get('/ranking', RankingController.getRanking);
+app.get('/contacts', UsersController.getContacts);
+app.get('/ranking', UsersController.getRanking);
 
 app.use('/auth', require('./routes/linkedin'))
 

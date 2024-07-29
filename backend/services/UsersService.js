@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { Users } = require('../models');
+const { Users, History} = require('../models');
 
 const UsersService = {
     register: async ({ name, password, email }) => {
@@ -24,6 +24,39 @@ const UsersService = {
         const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '1h' });
 
         return token;
+    },
+    getRanking: async ({ pages, size }) => {
+        let page = pages || 1; // Página atual
+        let pageSize = size || 10; // Tamanho da página
+
+        const offset = (page - 1) * pageSize;
+        const limit = pageSize;
+
+        const ranking = await Users.findAndCountAll({
+            include: {
+                model: History,
+                required: true,
+            },
+            limit: limit,
+            offset: offset,
+            order: [
+                [History, 'points', 'DESC'],
+                [History, 'time', 'DESC'],
+            ],
+        });
+
+        return ranking;
+    },
+    getContacts: async () => {
+        const offset = 5;
+        const contactsReturn = [];
+
+        const contactsData = await Users.findAll({
+        });
+
+        contactsReturn.push(contactsData);
+
+        return contactsReturn;
     }
 
 }

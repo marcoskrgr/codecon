@@ -1,4 +1,5 @@
 const UsersService = require('../services/UsersService')
+const {RankingService, ContactsService} = require("../services");
 
 const UsersController = {
     createUser: async (req, res) => {
@@ -18,6 +19,22 @@ const UsersController = {
         }
         catch (e){
             res.status(400).json({ error: e.message })
+        }
+    },
+    getRanking: async(req, res) => {
+        try {
+            const ranking = await UsersService.getRanking(req.query);
+            res.status(200).json({...ranking});
+        } catch (e) {
+            res.status(400).json({error: e.message});
+        }
+    },
+    getContacts: async (req, res) => {
+        try {
+            const contacts = await UsersService.getContacts();
+            res.status(200).json({ ...contacts });
+        } catch (e) {
+            res.status(400).json({ error: e.message });;
         }
     }
 }
