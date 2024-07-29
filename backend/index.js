@@ -2,10 +2,17 @@ const express = require('express')
 const passport = require('passport')
 const session = require('express-session')
 const strat = require('./auth/passport-linkedin')
+const cookieParser = require('cookie-parser')
 const port = process.env.PORT || 4000
-const { QuestionsController, AnswersController, ContactsController, RankingController } = require('./controllers')
+const {
+    QuestionsController,
+    AnswersController ,
+    UsersController,
+    ContactsController,
+    RankingController
+} = require('./controllers');
+const { CookieMiddleware } = require('./middlewares');
 const app = express()
-app.use(express.json());
 
 // https://www.linkedin.com/oauth/v2/authorization?response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A4000%2Fauth%2Flinkedin%2Fcallback&scope=r_emailaddress%20r_liteprofile&state=0QYdGsUeVaWDAK1ebdjfTMmu&client_id=77wh2farq79mh3
 
@@ -17,6 +24,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.json())
+app.use(cookieParser())
 
 // app.get('/', (req, res) => {
 //     res.send(`<center style="font-size:160%"> <p>This is Home Page </p>
@@ -49,20 +57,15 @@ app.get("/", (req, res) => {
     }
 });
 
-app.post('/questions', QuestionsController.createQuestion);
-app.post('/verify-answer/:answerId', AnswersController.verifyAnswer);
-
-app.use('/auth', require('./routes/linkedin'));
-
+app.post('/questions', CookieMiddleware, QuestionsController.createQuestion);
+app.post('/verify-answer/:answerId', CookieMiddleware, AnswersController.verifyAnswer);
+app.post('/register', UsersController.createUser);
+app.post('/login', UsersController.login);
 app.get('/questions', QuestionsController.getQuestion);
-
 app.get('/contacts', ContactsController.getContacts);
-
 app.get('/ranking', RankingController.getRanking);
 
-// app.get('/ranking', (req, res) => {
-//     res.send("funciona");
-// })
+app.use('/auth', require('./routes/linkedin'))
 
 app.listen(port, () => {
     console.log("Listening at http://localhost:" + port)
