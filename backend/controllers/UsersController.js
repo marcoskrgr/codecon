@@ -1,5 +1,4 @@
 const UsersService = require('../services/UsersService')
-const {RankingService, ContactsService} = require("../services");
 
 const UsersController = {
     createUser: async (req, res) => {
@@ -34,9 +33,17 @@ const UsersController = {
             const contacts = await UsersService.getContacts();
             res.status(200).json({ ...contacts });
         } catch (e) {
-            res.status(400).json({ error: e.message });;
+            res.status(400).json({ error: e.message });
         }
-    }
+    },
+    getUser: async (req, res) => {
+        try{
+            const user = await UsersService.getUser(req.body);
+            res.status(200).json({...user})
+        } catch (e) {
+            res.status(400).json({ error: e.message });
+        }
+    } 
 }
 
 module.exports = UsersController;

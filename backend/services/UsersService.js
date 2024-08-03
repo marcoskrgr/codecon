@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { Users, History} = require('../models');
+const { Users, History } = require('../models');
 
 const UsersService = {
     register: async ({ name, password, email }) => {
@@ -48,7 +48,6 @@ const UsersService = {
         return ranking;
     },
     getContacts: async () => {
-        const offset = 5;
         const contactsReturn = [];
 
         const contactsData = await Users.findAll({
@@ -57,6 +56,24 @@ const UsersService = {
         contactsReturn.push(contactsData);
 
         return contactsReturn;
+    },
+    getUser: async ({ id }) => {
+        const user = await Users.findOne({
+            where: {
+                id: id
+            }
+        })
+
+        const userData = {
+            id: user.dataValues.id,
+            name: user.dataValues.name,
+            email: user.dataValues.email,
+            phone: user.dataValues.phone,
+            hasPlayed: user.dataValues.hasPlayed,
+            role: user.dataValues.role
+        }
+
+        return userData;
     }
 
 }

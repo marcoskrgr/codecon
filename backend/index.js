@@ -62,6 +62,12 @@ app.post('/login', UsersController.login);
 app.get('/questions', QuestionsController.getQuestion);
 app.get('/contacts', UsersController.getContacts);
 app.get('/ranking', UsersController.getRanking);
+app.get('/user', UsersController.getUser);
+
+//para testar se rota esta funcionando no insomina, EXCLUIR DEPOIS
+// app.get('/user/:id', (req, res) => {
+//     res.send('funciona');
+// })
 
 app.use('/auth', require('./routes/linkedin'))
 
