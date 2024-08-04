@@ -64,16 +64,9 @@ const UsersService = {
             }
         })
 
-        const userData = {
-            id: user.dataValues.id,
-            name: user.dataValues.name,
-            email: user.dataValues.email,
-            phone: user.dataValues.phone,
-            hasPlayed: user.dataValues.hasPlayed,
-            role: user.dataValues.role
-        }
+        delete user.dataValues.password;
 
-        return userData;
+        return user.dataValues;
     }
 
 }
