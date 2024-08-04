@@ -38,12 +38,20 @@ const UsersController = {
     },
     getUser: async (req, res) => {
         try{
-            const user = await UsersService.getUser(req.body);
+            const user = await UsersService.getUser(req.params);
             res.status(200).json({...user})
         } catch (e) {
             res.status(400).json({ error: e.message });
         }
-    } 
+    },
+    createHistory: async (req, res) => {
+        try{
+            const userAndPoints = await UsersService.createHistory(req);
+            res.status(200).json({...userAndPoints})
+        } catch (e) {
+            res.status(400).json({ error: e.message });
+        }
+    }
 }
 
 module.exports = UsersController;

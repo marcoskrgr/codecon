@@ -62,7 +62,8 @@ app.post('/login', UsersController.login);
 app.get('/questions', QuestionsController.getQuestion);
 app.get('/contacts', UsersController.getContacts);
 app.get('/ranking', UsersController.getRanking);
-app.get('/user', UsersController.getUser);
+app.get('/user/:id', UsersController.getUser);
+app.post('/points', UsersController.createHistory);
 
 //para testar se rota esta funcionando no insomina, EXCLUIR DEPOIS
 // app.get('/user/:id', (req, res) => {

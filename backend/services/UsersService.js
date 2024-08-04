@@ -67,8 +67,22 @@ const UsersService = {
         delete user.dataValues.password;
 
         return user.dataValues;
-    }
+    },
+    createHistory: async ({ body, cookies }) => {
+        const { time, points } = body;
+        const { token } = cookies;
 
+        const user = jwt.verify(token, process.env.JWT_SECRET);
+
+        const history = await History.create({
+            userId: user.id,
+            time,
+            points,
+            date: Date.now()
+        });
+
+        return { user };
+    }
 }
 
 module.exports = UsersService;
